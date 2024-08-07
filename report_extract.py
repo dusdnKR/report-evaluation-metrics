@@ -1,12 +1,12 @@
 import pandas as pd
 import re
 
-def extract_findings_impression(report):
-    findings_match = re.search(r'FINDINGS:(.*?)(?:IMPRESSION:|$)', report, re.DOTALL)
-    impression_match = re.search(r'IMPRESSION:(.*)', report, re.DOTALL)
+def extractFindingsImpression(report):
+    findingsMatch = re.search(r'FINDINGS:(.*?)(?:IMPRESSION:|$)', report, re.DOTALL)
+    impressionMatch = re.search(r'IMPRESSION:(.*)(?:Note:|$)', report, re.DOTALL)
     
-    findings = findings_match.group(1).strip() if findings_match else ""
-    impression = impression_match.group(1).strip() if impression_match else ""
+    findings = findingsMatch.group(1).strip() if findingsMatch else ""
+    impression = impressionMatch.group(1).strip() if impressionMatch else ""
 
     findings = findings.replace('\n', ' ')
     impression = impression.replace('\n', ' ')
@@ -23,10 +23,10 @@ def extract_findings_impression(report):
     return findings, impression
 
 
-file_path = "Z:/Medical_Report_Generation/0805_chexfusion_report/mimic_gt_report.csv"
+filePath = "Z:/Medical_Report_Generation/0805_chexfusion_report/mimic_gt_report.csv"
 
-df = pd.read_csv(file_path)
-df[['Findings', 'Impression']] = df['report'].apply(lambda x: pd.Series(extract_findings_impression(x)))
+df = pd.read_csv(filePath)
+df[['Findings', 'Impression']] = df['report'].apply(lambda x: pd.Series(extractFindingsImpression(x)))
 
-output_file_path = "Z:/Medical_Report_Generation/0805_chexfusion_report/mimic_gt_report_processed.csv"
-df.to_csv(output_file_path, index=False)
+outputFilePath = "Z:/Medical_Report_Generation/0805_chexfusion_report/mimic_gt_report_processed.csv"
+df.to_csv(outputFilePath, index=False)
