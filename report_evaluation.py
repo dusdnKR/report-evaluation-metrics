@@ -100,8 +100,8 @@ def Tempfunction0806(is_rag, is_gradcam, is_predict):
 
     # Add 'report' (= Findings + Impression) Col
     print("Adding a 'report' (= Findings + Impression) Column..")
-    # reportGenerated['report'] = reportGenerated['Findings'] + " " + reportGenerated['Impression']
-    reportGenerated['report'] = reportGenerated['Final Report']
+    reportGenerated['report'] = reportGenerated['Findings'] + " " + reportGenerated['Impression']
+    # reportGenerated['report'] = reportGenerated['Final Report']
     reportGroundTruth['report'] = reportGroundTruth['Findings'] + " " + reportGroundTruth['Impression']
 
     # Test Result
@@ -117,5 +117,5 @@ def Tempfunction0806(is_rag, is_gradcam, is_predict):
 
 Tempfunction0806(False, True, True)
 Tempfunction0806(False, True, False)
-Tempfunction0806(False, False, True)
-Tempfunction0806(False, False, False)
+# Tempfunction0806(False, False, True)
+# Tempfunction0806(False, False, False)
