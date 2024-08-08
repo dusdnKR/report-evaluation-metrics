@@ -47,8 +47,8 @@ def calcScores(dfPredicted, dfGroundTruth, compColName='report'):
     for index, row in tqdm(dfPredicted.iterrows(), total=dfPredicted.shape[0]):
         if index in dfGroundTruth.index:
             reference = dfGroundTruth.loc[index, compColName]
-            if reference != "":
-                prediction = row[compColName]
+            prediction = row[compColName]
+            if reference != "" and prediction != "":
                 study_id.append(index)
                 references.append(reference)
                 predictions.append(prediction)
@@ -90,7 +90,7 @@ def calcScores(dfPredicted, dfGroundTruth, compColName='report'):
 def Tempfunction0806(is_rag, is_gradcam, is_predict):
     rootPath = "Z:/Medical_Report_Generation/0805_chexfusion_report"
     # generatedReportName = f"rag_{is_rag}_gradcam_{is_gradcam}_predict_{is_predict}.csv"
-    generatedReportName = f"rag_{is_rag}_gradcam_{is_gradcam}_predict_{is_predict}_remove_nan_cols_stage_2.csv"
+    generatedReportName = f"rag_{is_rag}_gradcam_{is_gradcam}_predict_{is_predict}_remove_nan_cols_stage_2_processed.csv"
     generatedReportPath = f"{rootPath}/{generatedReportName}"
 
     # Read CSV Files
@@ -100,18 +100,20 @@ def Tempfunction0806(is_rag, is_gradcam, is_predict):
 
     # Add 'report' (= Findings + Impression) Col
     print("Adding a 'report' (= Findings + Impression) Column..")
-    reportGenerated['report'] = reportGenerated['Findings'] + " " + reportGenerated['Impression']
+    # reportGenerated['report'] = reportGenerated['Findings'] + " " + reportGenerated['Impression']
+    reportGenerated['report'] = reportGenerated['Final Report']
     reportGroundTruth['report'] = reportGroundTruth['Findings'] + " " + reportGroundTruth['Impression']
 
     # Test Result
     compColNames = ['Findings', 'Impression', 'report']
+    compColNames = ['report']
     for compColName in compColNames:
         print(f"Processing {compColName} Column...")
         results_df = calcScores(reportGenerated, reportGroundTruth, compColName)
 
         # Save the result
         print("Saving the result...")
-        results_df.to_csv(f"{rootPath}/report_evaluation_metrics/{generatedReportName}_{compColName.lower()}.csv", index=False)
+        results_df.to_csv(f"{rootPath}/report_evaluation_metrics/{generatedReportName[:-4]}_{compColName.lower()}.csv", index=False)
 
 Tempfunction0806(False, True, True)
 Tempfunction0806(False, True, False)
